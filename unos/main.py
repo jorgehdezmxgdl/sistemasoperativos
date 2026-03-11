@@ -2,9 +2,15 @@
    INCORPORE EL MECANISMO DE COLA PARA INSERTAR Y MOSTRAR UN ELEMENTO
    EN LA INTERFAZ GRAFICA.
 """
+import sys
+import os
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import tkinter as tk
 from tkinter import ttk
+from Estructura.procesamiento import EstructuraCola
+from tkinter import messagebox
 
 class Ventana():
     def __init__(self):
@@ -14,9 +20,10 @@ class Ventana():
         self.creaCombo(["Selecciona:", "Crear Proceso", "Iniciar Proceso", "Suspender Proceso", "Reanudar Proceso", "Terminar Proceso"])
         self.creaEtiqueta("Dame el dato a registrar", 20, 50, 200, 20)
         self.creaEntrada(20, 80, 200, 20)
-        self.creaBoton("Registrar", 20, 110, 200, 20)
-        self.creaBoton("Regresa elemento", 20, 140, 200, 20)
+        self.boton1 = self.creaBoton("Registrar", 20, 110, 200, 20, self.btn_inserta_item)
+        self.boton2 = self.creaBoton("Regresa todos", 20, 140, 200, 20, self.btn_muestraElementos)
         self.creaTextArea(20, 170, 200, 200)
+        self.estructura = EstructuraCola(6)
         self.ventana.mainloop()
 
     def creaEtiqueta(self, texto, x, y, width, height):
@@ -27,9 +34,22 @@ class Ventana():
         self.entrada = tk.Entry(self.ventana)
         self.entrada.place(x=x, y=y, width=width, height=height)
         
-    def creaBoton(self, texto, x, y, width, height):
-        self.boton = tk.Button(self.ventana, text=texto)
-        self.boton.place(x=x, y=y, width=width, height=height)
+    def btn_inserta_item(self):
+        item = self.entrada.get()
+        if not self.estructura.nuevo_item(item):
+            messagebox.showinfo("Informacion", "Elemento insertado correctamente")
+            self.entrada.delete(0, tk.END)
+        else:
+            messagebox.showerror("Error","Limite alcanzado")
+       
+    def btn_muestraElementos(self):
+        self.textArea.delete(0.0, tk.END)
+        self.textArea.insert(0.0, self.estructura.regresa_todos())
+    
+    def creaBoton(self, texto, x, y, width, height, evento):
+        boton = tk.Button(self.ventana, text=texto, command=evento)
+        boton.place(x=x, y=y, width=width, height=height)
+        return boton 
 
     def creaTextArea(self, x, y, width, height):
         self.textArea = tk.Text(self.ventana)

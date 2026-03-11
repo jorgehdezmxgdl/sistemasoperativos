@@ -5,19 +5,18 @@ class EstructuraCola:
         self.cola = queue.Queue(maxsize=tamanio) #el maximo de elementos de la cola
 
     def nuevo_item(self, item):
-        print("No es posible registrar mas elementos") if self.cola.full() else self.cola.put(item)
+        if self.cola.full():
+            return True
+        else:
+            self.cola.put(item)
+            return False
         
     def regresa_sig_item(self):
         return None if self.cola.empty() else self.cola.get()
 
     def regresa_todos(self):
+        cadena = ""
         while not self.cola.empty():
-            print(self.cola.get())
+            cadena += self.cola.get() + "\n"
+        return cadena
 
-estructura = EstructuraCola(2)
-estructura.nuevo_item('proceso 1')
-estructura.nuevo_item('proceso 2')
-estructura.nuevo_item('proceso 3')
-print(estructura.regresa_sig_item())
-print(estructura.regresa_sig_item())
-print(estructura.regresa_sig_item())
