@@ -7,6 +7,13 @@ class Proceso():
         self.args = []
         self.nombre = []
         self.pcb = PCB()
+        self.prioridad = 'M'
+
+    def setPrioridad(self, prioridad):
+        self.prioridad = prioridad
+
+    def getPrioridad(self):
+        return self.prioridad
 
     def creaProceso(self, nombre,args):
         self.nombre.append(nombre)
