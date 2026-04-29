@@ -11,7 +11,7 @@ class Proceso:
 
     def cambiaEstado(self, estado):
         self.estado = estado
-        print(self.cambiaEstado)
+        print(self.estado)
     
     def ejecuta(self):
         self.cambiaEstado("En ejecucion")
